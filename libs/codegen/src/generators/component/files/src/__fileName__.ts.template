@@ -1,0 +1,38 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { StateValue, interpret } from 'xstate';
+import {
+  stateMachine,
+  StateContext,
+  StateEvents,
+} from './<%= fileName %>.xstate';
+
+@Component({
+  selector: 'kfern-<%= name %>-component',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './<%= fileName %>.html',
+  styles: [],
+})
+export class <%= className %> implements OnInit {
+  @Input() state: StateValue | undefined;
+  @Input() context: StateContext | undefined;
+
+  private stateMachine = interpret(stateMachine);
+
+  ngOnInit(): void {
+    this.stateMachine.onTransition((state) => {
+      this.state = state.value;
+      this.context = state.context;
+    });
+    this.stateMachine.onChange((context) => {
+      this.context = context;
+    });
+
+    this.stateMachine.start();
+  }
+
+  send(action: StateEvents) {
+    this.stateMachine.send(action);
+  }
+}

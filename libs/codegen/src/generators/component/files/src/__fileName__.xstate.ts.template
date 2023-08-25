@@ -1,0 +1,34 @@
+import { createMachine } from 'xstate';
+
+export interface StateContext {
+  message: string;
+}
+
+export type StateEvents = { type: 'SHOW' } | { type: 'HIDE' };
+
+export const initialContext: StateContext = {
+  message: 'Hello World',
+};
+export const stateMachine = createMachine({
+  id: '<%= className %>',
+  initial: 'messageOff',
+  schema: {
+    events: {} as StateEvents,
+    context: {} as StateContext,
+  },
+  context: initialContext,
+  tsTypes: {} as import('./<%= fileName %>.xstate.typegen').Typegen0,
+  predictableActionArguments: true,
+  states: {
+    messageOn: {
+      on: {
+        HIDE: 'messageOff',
+      },
+    },
+    messageOff: {
+      on: {
+        SHOW: 'messageOn',
+      },
+    },
+  },
+});
