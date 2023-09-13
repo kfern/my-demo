@@ -1,12 +1,3 @@
-/*
-  profileForm = this.fb.group({
-    firstName: ['', Validators.required],
-    lastName: [''],
-    age: [0],
-  });
-
-  */
-
 export const defaultModel = {
   entity: 'changeme',
   fields: {
