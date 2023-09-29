@@ -8,32 +8,51 @@ import {
 import * as path from 'path';
 import { ComponentGeneratorSchema } from './schema';
 import { Options } from 'nx/src/utils/params';
-
+import {
+  getEventsByState,
+  getHTMLViewByState,
+} from '../../utils/machines/machines';
+import { machineDefinition as simpleMachineDefinition } from './files/machines/simple/simple.machine';
 export async function componentGenerator(
   tree: Tree,
   options: ComponentGeneratorSchema
 ) {
-  const componentsLibraryName = 'components';
-
   const projects = getProjects(tree);
-  if (!projects.has(componentsLibraryName)) {
-    throw Error('components does not exists. Tip: nx g @kfern/codegen:init');
-  }
   const componentNames = names(options.name);
-  const targetDir = `${projects.get('components').sourceRoot}/components/${
-    componentNames.fileName
-  }`;
 
+  const htmlView = {
+    simple: getHTMLViewByState(getEventsByState(simpleMachineDefinition)),
+  };
   const finalOptions: Options = {
     ...options,
     name: componentNames.name.toLowerCase(),
     className: `${componentNames.className}Component`,
     fileName: `${componentNames.fileName}.component`,
+    machineFileName: `../../machines/${options.type.toLowerCase()}.machine`,
+    htmlView: htmlView[options.type.toLowerCase()],
   };
+
+  // Component files
+  const targetComponentsDir = `${
+    projects.get(options.project).sourceRoot
+  }/components/${componentNames.fileName}`;
+
   generateFiles(
     tree,
     path.join(__dirname, 'files/src'),
-    targetDir,
+    targetComponentsDir,
+    finalOptions
+  );
+
+  // Related state machine
+  const targetMachinesDir = `${
+    projects.get(options.project).sourceRoot
+  }/machines`;
+
+  generateFiles(
+    tree,
+    path.join(__dirname, `files/machines/${options.type.toLowerCase()}`),
+    targetMachinesDir,
     finalOptions
   );
 

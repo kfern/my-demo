@@ -17,6 +17,7 @@ type NxProjects = Map<string, ProjectConfiguration>;
 const addcomponentsLibrary = async (tree: Tree, projects: NxProjects) => {
   const name = 'components';
   if (!projects.has(name)) {
+    tree.write('.gitignore', ''); // Fix "Couldn't find .gitignore file to update" warning in tests
     await ngLibraryGenerator(tree, { name });
     await storybookConfigurationGenerator(tree, {
       name,

@@ -12,7 +12,22 @@
         "index": 0
       },
       "x-prompt": "What name would you like to use?"
+    },
+    "type": {
+      "type": "string",
+      "description": "Component type",
+      "x-prompt": {
+        "message": "",
+        "type": "list",
+        "items": [{ "value": "simple", "label": "Simple" }]
+      }
+    },
+    "project": {
+      "type": "string",
+      "description": "Project",
+      "x-prompt": "Select a project",
+      "x-dropdown": "projects"
     }
   },
-  "required": ["name"]
+  "required": ["name", "type", "project"]
 }

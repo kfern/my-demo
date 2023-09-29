@@ -3,9 +3,9 @@ import { CommonModule } from '@angular/common';
 import { StateValue, interpret } from 'xstate';
 import {
   stateMachine,
-  StateContext,
-  StateEvents,
-} from './<%= fileName %>.xstate';
+  MachineContext,
+  MachineEventsList,
+} from '<%= machineFileName %>';
 
 @Component({
   selector: 'kfern-<%= name %>-component',
@@ -16,7 +16,7 @@ import {
 })
 export class <%= className %> implements OnInit {
   @Input() state: StateValue | undefined;
-  @Input() context: StateContext | undefined;
+  @Input() context: MachineContext | undefined;
 
   private stateMachine = interpret(stateMachine);
 
@@ -32,7 +32,7 @@ export class <%= className %> implements OnInit {
     this.stateMachine.start();
   }
 
-  send(action: StateEvents) {
+  send(action: MachineEventsList) {
     this.stateMachine.send(action);
   }
 }

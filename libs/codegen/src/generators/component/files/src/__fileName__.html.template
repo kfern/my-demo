@@ -1,10 +1,6 @@
 <p>kfern-<%= name %>-component works!</p>
 <p>State: {{ state }}</p>
-<div *ngIf="state === 'messageOff'">
-  <button (click)="send('SHOW')">SHOW</button>
-</div>
-<div *ngIf="state === 'messageOn'">
-  <button (click)="send('HIDE')">HIDE</button>
-  <p>{{ context.message }}</p>
-  <pre>{{ context | json }}</pre>
-</div>
+
+<% htmlView.forEach((item) => { %>
+  <%- item %><% }); %>
+
