@@ -23,7 +23,7 @@ export const initialContext: MachineContext = {
   message: 'Hello World',
 };
 
-export const machineDefinition = {
+export const stateMachine = createMachine<MachineContext, MachineEvents>({
   id: 'simple',
   schema: {
     context: {} as MachineContext,
@@ -51,6 +51,4 @@ export const machineDefinition = {
       },
     },
   },
-};
-
-export const stateMachine = createMachine(machineDefinition);
+});

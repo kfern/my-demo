@@ -1,3 +1,4 @@
+import { createMachine } from 'xstate';
 import {
   EventsByState,
   getEventsByState,
@@ -32,7 +33,9 @@ const testMachineDefinition = {
 
 describe('utils/machines', () => {
   it('getEventsByState', () => {
-    const act = getEventsByState(testMachineDefinition);
+    const testMachine = createMachine(testMachineDefinition);
+
+    const act = getEventsByState(testMachine);
 
     const expectedResult: typeof act = {
       active: ['TOGGLE', 'DISABLE'],

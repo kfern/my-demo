@@ -12,7 +12,11 @@ import {
   getEventsByState,
   getHTMLViewByState,
 } from '../../utils/machines/machines';
-import { machineDefinition as simpleMachineDefinition } from './files/machines/simple/simple.machine';
+import {
+  stateMachine as simpleStateMachine,
+  MachineContext as SimpleMachineContext,
+  MachineEvents as SimpleMachineEvents,
+} from './files/machines/simple/simple.machine';
 export async function componentGenerator(
   tree: Tree,
   options: ComponentGeneratorSchema
@@ -21,7 +25,11 @@ export async function componentGenerator(
   const componentNames = names(options.name);
 
   const htmlView = {
-    simple: getHTMLViewByState(getEventsByState(simpleMachineDefinition)),
+    simple: getHTMLViewByState(
+      getEventsByState<SimpleMachineContext, SimpleMachineEvents>(
+        simpleStateMachine
+      )
+    ),
   };
   const finalOptions: Options = {
     ...options,

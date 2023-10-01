@@ -1,9 +1,10 @@
-import { createMachine } from 'xstate';
+import { EventObject, StateMachine } from 'xstate';
 
 export type EventsByState = Record<string, string[]>;
 
-export const getEventsByState = (machineDef: object) => {
-  const machine = createMachine(machineDef);
+export const getEventsByState = <TContext, TEvents extends EventObject>(
+  machine: StateMachine<TContext, unknown, TEvents>
+) => {
   const result: EventsByState = {};
   Object.keys(machine.definition.states).forEach((state) => {
     machine.definition.states[state].transitions.forEach((t) => {
@@ -28,7 +29,7 @@ export const getHTMLViewByState = (data: EventsByState) => {
   result.push('');
   states.forEach((s) => {
     result.push(`<ng-template #${s}Template>`);
-    result.push(`<div>`);
+    result.push(`<div data-state-id="${s}">`);
     result.push(`<p>This content is for the '${s}' state.</p>`);
     data[s].forEach((e) => {
       result.push(`<button (click)="send('${e}')">${e}</button>`);
